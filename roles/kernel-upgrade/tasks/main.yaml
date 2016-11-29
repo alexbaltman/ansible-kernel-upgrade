@@ -28,9 +28,9 @@
   shell: "{{ item }}"
   with_items:
   - make silentoldconfig .config
-  - make 
-  - make modules
-  - make modules_install
+  - make -j{{ cpus }} 
+  - make -j{{ cpus }} modules
+  - make -j{{ cpus }} modules_install
   - make install
   args:
     chdir: /tmp/linux-{{ kernel_ver }}/

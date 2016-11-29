@@ -3,7 +3,7 @@
 # ansible-playbook upgrade.yml -i inventory.yml -u root -k
 
 - hosts: all
-  tasks:
+  pre_tasks:
     - assert:
         that:
           - ansible_version.major == 2
