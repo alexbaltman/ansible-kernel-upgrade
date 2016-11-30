@@ -4,6 +4,7 @@
     - assert:
         that:
           - ansible_version.major == 2
-  sudo: yes
+  become: yes
+  become_method: sudo
   roles:
     - kernel-upgrade
