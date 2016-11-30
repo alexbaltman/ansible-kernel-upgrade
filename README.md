@@ -11,20 +11,18 @@ vagrant up
 For remote servers:
 ```
 ./getinventory.sh
-ansible-playbook -vv deploy.yaml -i qaa-inventory/prod0.yaml deploy.yaml
+ansible-playbook -vv deploy.yaml -i qaa-ansible-inventory/prod0.yaml deploy.yaml
 ```
 
 ### Adjustable: 
-You can adjust the level of concurrency to speed compilation of the kernel - on local vagrant VM with 1 CPU timed ~2hr.s, on local vagrant VM w/ 6 CPU timed around 18min.s, and on a UCS server you can get the time down further by changing cpus to 40 or so - be careful to not overallocate, 80% of CPUs is fine since you'll be reboot anyways.
+You can adjust the level of concurrency to speed compilation of the kernel - on local vagrant VM with 1 CPUs timed ~2hr.s, on local vagrant VM w/ 6 CPUs timed around 18min.s, and on a UCS server you can get the time down further by changing CPUs to 40 or so - be careful to not overallocate, 80% of CPUs is fine since you'll be rebooting anyways.
 ```
 ansible-playbook -vv deploy.yaml -i qaa-inventory/prod0.yaml deploy.yaml --extra-vars 'kernel_ver=4.4.xx' --extra-vars 'cpus=40'
 ```
 
-If you do choose to change the kernel version you will need a kernel.config so that you do not need to interactively make menuconfig. You will have to do this once per kernel version and swap out the current kernel.config OR you can ADD those to the repo as we go with vesions tagged to their name and just update the playbook.
+If you do choose to change the kernel version you will need a kernel.config so that you do not need to interactively make menuconfig. You will have to do this once per kernel version and swap out the current kernel.config OR you can just and those to the repo as we go, with vesions tagged to the end of their name and just update the playbook to use the version at the end to id the file.
 
-Updating the kernel.config will let you silently compile the kernel. You can create this by manually compiling the kernel on one of the hosts one time, the resulting config can be found inside the folder where the kernel is compiled. This playbook expects the kernel config file (kernel.config) file to be in the file folder of the kernel-upgrade role.
-
-A usable kernel config with default options are included in the script folder for 4.4.23.
+A usable kernel config with default options are included in the file folder of the kernel-upgrade role for 4.4.23.
 
 
 ### Playbook tested against:
