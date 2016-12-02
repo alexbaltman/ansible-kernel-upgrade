@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "centos/7"
+  config.vm.box = "http://cis-kickstart.cisco.com/ccs-rhel-7.box"
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
