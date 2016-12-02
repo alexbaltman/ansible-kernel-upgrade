@@ -1,3 +1,4 @@
 qaa-ansible-inventory/
+local_dev/qaa-ansible-kernel-upgrade/
 deploy.retry
-local_dev/.vagrant
+local_dev/*/

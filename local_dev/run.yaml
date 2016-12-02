@@ -1,0 +1,18 @@
+# Using this sucker until we start building an updated box with the right kernel and standard base laid out. Fortunately, this forces us to at least run the kernel-upgrade playbook (aka make sure it works) so the concourse-worker deploy works.
+
+- hosts: all
+  vars:
+    dependencies: 
+      - qaa-ansible-base
+  tasks:
+  - name: Make dir for repo/s
+    file: path=./{{ item }} state=directory mode=0755
+    with_items: {{ dependencies }}
+
+  - name: Get repo/s
+    local_action: git repo=git@github.com:cisco-cis/qaa-ansible-base.git dest=./qaa-ansible-base clone=yes
+    with_items: {{ dependencies }}
+
+  - name: Run the playbooks we just grabbed
+    local_action: shell ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory ./{{ item }}/deploy.yaml
+    with_items: {{ dependencies }}

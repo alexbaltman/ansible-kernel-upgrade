@@ -1,6 +1,27 @@
 ---
 - name: Install development tools package group
-  yum: name="@Development tools" state=present update_cache=yes
+  # The raw yum group does not work since switch to rhel ccs-mirror from centos. Reduced total rpms too.
+  # yum: name="@Development tools" state=present update_cache=yes --> does not work using internal repos
+  yum: name={{ item }} state=present update_cache=yes
+  with_items:
+    - bison
+    - byacc
+    - cscope
+    - ctags
+    - flex
+    - gcc
+    - gcc-c++
+    - git
+    - libtool
+    - patch
+    - patchutils
+    - swig
+
+# There is a conflict between the vagrant box anaconda install and what is avail on the ccs-mirror repos
+# This isn't a problem on the physical servers that we kickstarted on 12/1/16; but this should work for
+# both --> if it does not then we can just resolve it in the local_dev/Vagrantfile instead.
+- name: Downgrade krb5-libs
+  shell: yum downgrade krb5-libs -y
 
 - name: Install kernel dev packages
   yum: name={{ item }} state=present
