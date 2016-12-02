@@ -7,12 +7,12 @@
   tasks:
   - name: Make dir for repo/s
     file: path=./{{ item }} state=directory mode=0755
-    with_items: {{ dependencies }}
+    with_items: '{{ dependencies }}'
 
   - name: Get repo/s
     local_action: git repo=git@github.com:cisco-cis/qaa-ansible-base.git dest=./qaa-ansible-base clone=yes
-    with_items: {{ dependencies }}
+    with_items: '{{ dependencies }}'
 
   - name: Run the playbooks we just grabbed
     local_action: shell ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory ./{{ item }}/deploy.yaml
-    with_items: {{ dependencies }}
+    with_items: '{{ dependencies }}'
