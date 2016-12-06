@@ -10,9 +10,9 @@
     with_items: '{{ dependencies }}'
 
   - name: Get repo/s
-    local_action: git repo=git@github.com:cisco-cis/qaa-ansible-base.git dest=./qaa-ansible-base clone=yes
+    local_action: git repo=git@github.com:cisco-cis/{{ item }}.git dest=./{{ item }} clone=yes
     with_items: '{{ dependencies }}'
 
-  - name: Run the playbooks we just grabbed
+  - name: Run the playbook/s we just grabbed
     local_action: shell ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory ./{{ item }}/deploy.yaml
     with_items: '{{ dependencies }}'
