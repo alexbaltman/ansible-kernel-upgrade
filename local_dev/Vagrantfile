@@ -7,10 +7,21 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
     v.cpus = 6
+    ## Start: Add /dev/sdb at size 10GB
+    second_disk = `VBoxManage list systemproperties | grep "Default machine folder" | awk '{print $4}'`.strip
+    second_disk = second_disk + ' VMs/' + `basename $(dirname $(pwd))` + '/second_disk.vmdk'
+    unless File.exist?(second_disk)
+        v.customize ['createhd', '--format', 'VMDK', '--size', 10240, '--filename', second_disk]
+    end
+    v.customize ['storageattach', :id, '--storagectl', 'IDE Controller', '--port', 1, '--dev
+ice', 0, '--type', 'hdd', '--medium', second_disk]
+    ## END config of second disk
   end
 
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "run.yaml"
+  end
+  config.vm.provision :ansible do |ansible|
     ansible.playbook = "../deploy.yaml"
     ansible.verbose = "vv"
   end
