@@ -20,6 +20,7 @@ ice', 0, '--type', 'hdd', '--medium', second_disk]
 
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "run.yaml"
+    ansible.verbose = "vv"
   end
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "../deploy.yaml"
